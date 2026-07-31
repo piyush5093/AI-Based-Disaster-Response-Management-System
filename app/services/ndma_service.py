@@ -1,5 +1,6 @@
 import httpx
 import logging
+import asyncio
 import xmltodict
 from datetime import datetime
 from app.models.disaster_event import DisasterEvent
@@ -98,6 +99,7 @@ async def fetch_and_store_ndma_events() -> dict:
                     continue
                     
                 try:
+                    await asyncio.sleep(0.5)
                     cap_response = await client.get(cap_url, timeout=15.0, follow_redirects=True)
                     if cap_response.status_code != 200:
                         summary["errors"].append(f"Failed to fetch {cap_url}: {cap_response.status_code}")
